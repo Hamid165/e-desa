@@ -8,6 +8,11 @@
     --section-bg-light: #ffffff;
     --section-bg-dark: #3b82f6;
     --border-color: #d1d5db;
+    
+    /* BARU: Variabel untuk konsistensi desain */
+    --border-radius-sm: 8px;   /* Untuk tombol & elemen kecil */
+    --border-radius-md: 12px;  /* Untuk kartu & gambar */
+    --transition-fast: all 0.3s ease;
 }
 
 * {
@@ -16,10 +21,15 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth; /* Efek scroll halus */
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     line-height: 1.6;
     color: var(--text-dark);
+    background-color: var(--section-bg-light); /* Latar belakang body utama */
 }
 
 .container {
@@ -31,10 +41,12 @@ body {
 h1, h2, h3 {
     line-height: 1.2;
     margin-bottom: 1rem;
+    font-weight: 700;
 }
 
-h1 { font-size: 2.8rem; }
-h2 { font-size: 2.2rem; text-align: center; }
+/* DISESUAIKAN: Ukuran font lebih seimbang */
+h1 { font-size: 3.5rem; } /* Lebih kecil dari 5.5rem */
+h2 { font-size: 2.5rem; text-align: center; } /* Lebih kecil dari 4.5rem */
 h3 { font-size: 1.8rem; }
 
 a {
@@ -52,7 +64,7 @@ img {
 }
 
 section {
-    padding: 60px 0;
+    padding: 80px 0; /* DISESUAIKAN: Padding lebih konsisten */
 }
 
 /* --- Header & Navbar --- */
@@ -60,6 +72,10 @@ header {
     background-color: var(--background-blue);
     color: var(--text-light);
     padding: 1rem 0;
+    position: sticky; /* BARU: Membuat navbar tetap di atas saat di-scroll */
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* BARU: Efek bayangan halus */
 }
 
 .navbar {
@@ -71,6 +87,17 @@ header {
 .logo {
     font-size: 1.5rem;
     font-weight: 700;
+    /* Tampilkan teks logo sebagai kolom agar 'DIGITAL' berada di bawah 'E-DESA' */
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+}
+
+.logo-bottom {
+    font-size: inherit; /* samakan ukuran dengan baris atas */
+    font-weight: inherit; /* samakan ketebalan dengan baris atas */
+    opacity: 0.95;
+    letter-spacing: 1px;
 }
 
 .navbar nav ul {
@@ -83,22 +110,37 @@ header {
 
 .navbar nav ul li a {
     font-weight: 500;
-    transition: color 0.3s;
+    transition: var(--transition-fast);
+    position: relative; /* BARU: Untuk efek garis bawah */
+    padding-bottom: 5px;
+}
+
+/* BARU: Efek hover garis bawah */
+.navbar nav ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--text-light);
+    transition: width 0.3s ease;
+}
+
+.navbar nav ul li a:hover::after,
+.navbar nav ul li a.active::after { /* Anda bisa tambahkan class 'active' nanti */
+    width: 100%;
 }
 
 .navbar nav ul li a:hover {
-    color: var(--border-color);
+    color: var(--text-light); /* Warna tetap terang saat hover */
+    opacity: 0.8;
 }
 
-.social-icons-header a {
-    margin-left: 15px;
-    font-size: 1.1rem;
-}
-
-/* --- Hero Section (UPDATED) --- */
+/* --- Hero Section --- */
 .hero {
-    background-color: var(--section-bg-light); /* DIUBAH: Latar belakang menjadi putih */
-    color: var(--text-dark); /* DIUBAH: Warna teks menjadi gelap */
+    background-color: var(--section-bg-light);
+    color: var(--text-dark);
     padding: 60px 0;
 }
 
@@ -113,33 +155,51 @@ header {
 }
 
 .hero h1 {
-    color: var(--primary-blue); /* DIUBAH: Warna judul hero menjadi biru */
-    font-size: 5.5rem; /* DIUBAH: Ukuran font diperbesar */
+    color: var(--primary-blue);
+    font-size: 3.8rem; /* DISESUAIKAN: Sedikit lebih besar dari h1 lain */
+    margin-bottom: 1.5rem;
 }
 
+/* Tampilkan kata 'DIGITAL' di bawah judul utama pada hero */
+.hero-text h1 .hero-sub {
+    display: block; /* paksa baris baru */
+    font-size: inherit; /* samakan ukuran dengan teks h1 */
+    font-weight: inherit; /* samakan ketebalan dengan teks h1 */
+    opacity: 0.95;
+    margin-top: 6px;
+    letter-spacing: 1px;
+    color: var(--primary-blue);
+}
+
+/* HAPUS style dari .hero-image */
 .hero-image {
     flex: 1;
+    /* HAPUS border-radius & box-shadow dari sini JIKA ADA */
 }
 
+/* PINDAHKAN/TERAPKAN style ke .hero-image img */
 .hero-image img {
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    width: 100%; /* Pastikan gambar mengisi container */
+    display: block;
+    border-radius: var(--border-radius-md); /* Terapkan di sini */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1); /* Terapkan di sini */
 }
 
 .hero-buttons {
     margin-top: 20px;
+    display: flex; /* BARU: Membuat tombol sejajar */
+    gap: 15px; /* BARU: Memberi jarak antar tombol */
 }
 
 .btn {
     display: inline-block;
     padding: 12px 28px;
-    border-radius: 8px;
+    border-radius: var(--border-radius-sm); /* KONSISTENSI */
     font-weight: 600;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: var(--transition-fast);
 }
 
-/* Tombol Primary di Hero (UPDATED) */
 .hero .btn-primary {
     background-color: var(--primary-blue);
     color: var(--text-light);
@@ -149,59 +209,88 @@ header {
 .hero .btn-primary:hover {
     background-color: var(--darker-blue);
     border-color: var(--darker-blue);
+    transform: translateY(-2px); /* BARU: Efek hover */
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); /* BARU: Efek hover */
 }
 
-/* Tombol Secondary di Hero (UPDATED) */
 .hero .btn-secondary {
     background-color: transparent;
     color: var(--primary-blue);
     border: 2px solid var(--primary-blue);
-    margin-left: 15px;
+    margin-left: 0; /* DIHAPUS: margin-left (sudah pakai gap) */
 }
 
 .hero .btn-secondary:hover {
     background-color: var(--primary-blue);
     color: var(--text-light);
+    transform: translateY(-2px); /* BARU: Efek hover */
 }
 
-/* Tombol di section biru tua */
 .btn-light {
     background-color: var(--text-light);
     color: var(--primary-blue);
     font-size: 1.1rem;
+    border: 2px solid var(--text-light);
 }
 .btn-light:hover {
-    background-color: #f0f0f0;
+    background-color: transparent;
+    color: var(--text-light);
+    transform: translateY(-2px); /* BARU: Efek hover */
 }
 
 /* --- Gallery Section --- */
 .e-desa-gallery {
-    background-color: var(--section-bg-dark); /* DIUBAH: Latar belakang menjadi biru */
-    padding: 100px 0; /* DIUBAH: Menambah padding atas dan bawah */
+    background-color: var(--section-bg-dark);
+    padding: 80px 0; /* DISESUAIKAN */
 }
 
-/* DIUBAH: Membuat kontainer galeri lebih lebar */
 .e-desa-gallery .container {
     max-width: 1300px;
 }
 
 .e-desa-gallery h2 {
-    font-size: 4.5rem; /* DIUBAH: Ukuran font diperbesar */
-    color: var(--text-light); /* DIUBAH: Warna judul menjadi terang */
+    color: var(--text-light);
 }
 
+/* --- Gallery Section (HORIZONTAL SCROLL) --- */
+
+/* GANTI KODE .gallery-grid ANDA DENGAN INI */
 .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;          /* 1. Ubah dari grid ke flex */
+    flex-wrap: nowrap;      /* 2. Paksa semua item tetap dalam satu baris (tidak turun) */
+    overflow-x: auto;     /* 3. Tambahkan scroll horizontal (bisa digeser) */
     gap: 20px;
     margin-top: 30px;
+    padding-bottom: 10px; /* Opsional: memberi sedikit ruang di bawah gambar */
+
+    /* 4. Ini bagian "walau ga keliatan" (sembunyikan scrollbar) */
+    -ms-overflow-style: none;  /* IE dan Edge */
+    scrollbar-width: none;       /* Firefox */
 }
 
+/* 4a. Sembunyikan scrollbar untuk Chrome, Safari, dan Opera */
+.gallery-grid::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* GANTI KODE .gallery-grid img ANDA DENGAN INI */
 .gallery-grid img {
-    width: 100%;
-    height: 350px; /* Dipertahankan sesuai kode Anda */
-    object-fit: cover;
-    border-radius: 15px;
+    /* 5. Beri lebar tetap agar tidak "penyet" */
+    width: 300px; 
+    /* Ganti 'width: 100%' dengan 'width: 300px' (atau ukuran lain) */
+    
+    height: 280px; 
+    object-fit: contain;
+    border-radius: var(--border-radius-md);
+    transition: var(--transition-fast);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* Efek hover biarkan seperti sebelumnya */
+.gallery-grid img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
 }
 
 /* --- Why Us Section --- */
@@ -215,7 +304,8 @@ header {
 .why-us-image { flex: 1; }
 
 .why-us-image img {
-    border-radius: 15px;
+    border-radius: var(--border-radius-md); /* KONSISTENSI */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
 .why-us-text ul li {
@@ -236,38 +326,81 @@ header {
     background-color: var(--section-bg-dark);
     color: var(--text-light);
     text-align: center;
-    padding: 200px 0; 
+    padding: 100px 0; /* DISESUAIKAN: Padding 200px terlalu besar */
 }
 
 .features-cta p {
     max-width: 600px;
     margin: 0 auto 30px;
+    font-size: 1.1rem; /* BARU: Sedikit diperbesar */
+    opacity: 0.9;
 }
-
 /* --- Officials Section --- */
 .officials {
-    padding: 200px 0; 
+    padding: 80px 0;
     background-color: var(--section-bg-light);
 }
+
 .officials h2 {
-    font-size: 4.5rem; /* DIUBAH: Ukuran font diperbesar */
+    /* Ukuran font sudah disesuaikan sebelumnya */
+    color: var(--text-dark); /* Pastikan warna teks gelap */
+    margin-bottom: 40px; /* Tambah jarak di bawah judul */
 }
 
+/* GANTI KODE .officials-grid ANDA DENGAN INI */
 .officials-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;          /* 1. Ubah dari grid ke flex */
+    flex-wrap: nowrap;      /* 2. Paksa semua item tetap dalam satu baris (tidak turun) */
+    overflow-x: auto;     /* 3. Tambahkan scroll horizontal (bisa digeser) */
     gap: 30px;
     margin-top: 30px;
+    padding-bottom: 10px; /* Opsional: memberi sedikit ruang di bawah gambar */
+
+    /* 4. Sembunyikan scrollbar (seperti galeri) */
+    -ms-overflow-style: none;  /* IE dan Edge */
+    scrollbar-width: none;       /* Firefox */
 }
 
+/* 4a. Sembunyikan scrollbar untuk Chrome, Safari, dan Opera */
+.officials-grid::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* GANTI KODE .official-card ANDA DENGAN INI */
+.official-card {
+    /* 5. Beri lebar tetap agar tidak "penyet" */
+    flex: 0 0 auto; /* Penting: mencegah card mengecil */
+    width: 250px; /* Atur lebar tetap untuk setiap kartu */
+    /* Anda bisa sesuaikan 250px ini sesuai keinginan */
+
+    border-radius: var(--border-radius-md); /* KONSISTENSI */
+    overflow: hidden; /* Penting untuk gambar */
+    transition: var(--transition-fast);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    
+    /* HILANGKAN INI: Menghilangkan stroke biru */
+    /* border: 5px solid var(--primary-blue); */ 
+}
+
+/* GANTI KODE .official-card img ANDA DENGAN INI */
 .official-card img {
-    border: 5px solid var(--primary-blue);
-    border-radius: 55px;
+    border: none; /* Pastikan tidak ada border di gambar */
+    border-radius: 0; /* Pastikan tidak ada border-radius di gambar */
     width: 100%;
-    -webkit-border-radius: 55px;
-    -moz-border-radius: 55px;
-    -ms-border-radius: 55px;
-    -o-border-radius: 55px;
+    height: 300px; /* Tetapkan tinggi agar konsisten, sesuaikan jika perlu */
+    object-fit: contain; /* Memastikan gambar terpotong dengan baik */
+    transition: var(--transition-fast);
+}
+
+/* Efek hover kartu biarkan seperti sebelumnya */
+.official-card:hover {
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+    transform: translateY(-5px);
+}
+
+.official-card:hover img {
+    transform: scale(1.1);
 }
 
 /* --- FAQ Section --- */
@@ -283,23 +416,34 @@ header {
     text-align: left;
 }
 
+/* DIPERBARUI: Membuat link interaktif */
 .faq ul li {
     background-color: rgba(255,255,255,0.1);
-    padding: 15px;
     margin-bottom: 10px;
-    border-radius: 8px;
+    border-radius: var(--border-radius-sm); /* KONSISTENSI */
+    transition: var(--transition-fast);
+}
+
+.faq ul li a {
+    display: block; /* Membuat link memenuhi li */
+    padding: 20px; /* Padding dipindah ke link */
     font-weight: 500;
+}
+
+.faq ul li:hover {
+    background-color: rgba(255,255,255,0.2);
+    transform: translateX(10px); /* Efek hover */
 }
 
 /* --- Footer --- */
 footer {
     background-color: var(--darker-blue);
     color: var(--text-light);
-    padding-top: 40px;
+    padding-top: 60px; /* DISESUAIKAN */
 }
 
 .footer-content h4 {
-    font-size: 3.5rem;
+    font-size: 2.5rem; /* DISESUAIKAN */
     margin-bottom: 20px;
     border-bottom: 2px solid var(--primary-blue);
     padding-bottom: 10px;
@@ -313,56 +457,134 @@ footer {
 }
 
 .footer-col h5 {
-    font-size: 1.1rem;
+    font-size: 1.2rem; /* DISESUAIKAN */
     margin-bottom: 15px;
+    color: #f0f0f0;
 }
 
 .footer-col p, .footer-col ul li {
     margin-bottom: 10px;
     font-size: 0.95rem;
-    opacity: 0.9;
+    opacity: 0.8;
+}
+
+.footer-col ul li a {
+    transition: var(--transition-fast);
+}
+
+.footer-col ul li a:hover {
+    opacity: 1;
+    padding-left: 5px; /* Efek hover */
 }
 
 .footer-col i {
     margin-right: 8px;
+    width: 15px; /* Merapikan ikon */
 }
 
 .social-icons-footer a {
     margin-right: 15px;
     font-size: 1.5rem;
+    transition: var(--transition-fast);
+}
+
+.social-icons-footer a:hover {
+    opacity: 0.7;
+    transform: scale(1.1);
 }
 
 .copyright {
     text-align: center;
     padding: 20px 0;
     margin-top: 30px;
-    background-color: #1e40af; /* Sedikit lebih gelap */
+    background-color: #1e40af;
+    font-size: 0.9rem;
+    opacity: 0.8;
 }
 
 /* --- Responsive Design --- */
+
+/* Tablet Besar (misal: iPad landscape) */
+@media (max-width: 992px) {
+    .container {
+        max-width: 900px;
+    }
+    
+    h1 { font-size: 3rem; }
+    h2 { font-size: 2.2rem; }
+
+    .hero-content {
+        flex-direction: column-reverse; /* Gambar di atas, teks di bawah */
+        text-align: center;
+    }
+
+    .hero-buttons {
+        justify-content: center; /* Tombol ke tengah */
+    }
+
+    .why-us-content {
+        flex-direction: column;
+    }
+
+    .footer-columns {
+        grid-template-columns: 1fr 1fr; /* 2 kolom di tablet */
+    }
+}
+
+/* Tablet Kecil & HP Besar */
 @media (max-width: 768px) {
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    
+    .navbar {
+        flex-direction: column;
+        gap: 15px; /* Jarak antara logo dan nav */
+    }
+
+    .navbar nav ul {
+        flex-direction: column; /* Menu jadi vertikal */
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+    }
+    .navbar nav ul li {
+        margin-left: 0;
+        width: 100%;
+        text-align: center;
+    }
+    .navbar nav ul li a {
+        display: block;
+        padding: 10px;
+        background: rgba(0,0,0,0.1);
+        border-radius: var(--border-radius-sm);
+    }
+    .navbar nav ul li a::after {
+        display: none; /* Matikan efek garis bawah di mobile */
+    }
+
+    /* Grid (gallery, officials) sudah otomatis responsif karena auto-fit */
+}
+
+/* HP Kecil */
+@media (max-width: 500px) {
     h1 { font-size: 2.2rem; }
     h2 { font-size: 1.8rem; }
-    
-    .navbar { flex-direction: column; }
-    .navbar nav ul { margin: 15px 0; }
 
-    .hero-content { flex-direction: column; text-align: center; }
-    
-    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-    .gallery-grid img { height: 180px; }
+    .hero-buttons {
+        flex-direction: column; /* Tombol jadi vertikal */
+        gap: 15px;
+        align-items: stretch; /* Tombol jadi full-width */
+    }
 
-    .why-us-content { flex-direction: column; }
-    
-    .officials-grid { grid-template-columns: repeat(2, 1fr); }
-    
-    .footer-columns { grid-template-columns: 1fr 1fr; }
+    .footer-columns {
+        grid-template-columns: 1fr; /* 1 kolom di HP */
+    }
+
+    .social-icons-header {
+        display: none;
+    }
+
+    .features-cta p {
+        font-size: 1rem;
+    }
 }
-
-@media (max-width: 500px) {
-    .gallery-grid { grid-template-columns: 1fr; }
-    .officials-grid { grid-template-columns: 1fr; }
-    .footer-columns { grid-template-columns: 1fr; }
-    .social-icons-header { display: none; }
-}
-
